@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MapQuest Driving Directions - Official Route Planner & Maps</title>
+    <meta name="description"
+        content="Get accurate driving directions, live traffic updates, and route planning with MapQuest. Find the best route to your destination, check gas prices, and explore local businesses.">
+    <meta name="keywords"
+        content="mapquest, driving directions, mapquest driving directions, route planner, maps, live traffic, gas prices, mapquest official">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://mapquest-directions.github.io/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mapquest-directions.github.io/">
+    <meta property="og:title" content="MapQuest Driving Directions - Official Route Planner & Maps">
+    <meta property="og:description"
+        content="Get accurate driving directions, live traffic updates, and route planning with MapQuest. Find the best route to your destination today.">
+    <meta property="og:image" content="https://www.mapquest.com/img/mq_logo_og.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://mapquest-directions.github.io/">
+    <meta property="twitter:title" content="MapQuest Driving Directions - Official Route Planner & Maps">
+    <meta property="twitter:description"
+        content="Get accurate driving directions, live traffic updates, and route planning with MapQuest. Find the best route to your destination today.">
+    <meta property="twitter:image" content="https://www.mapquest.com/img/mq_logo_og.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+
+    <!-- Schema.org Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "MapQuest Driving Directions",
+      "url": "https://mapquest-directions.github.io/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.mapquest.com/search/results?query={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <style>
+        :root {
+            --primary-color: #A6C638;
+            /* Mapquest Green */
+            --primary-dark: #8da830;
+            --secondary-color: #2C3E50;
+            /* Dark Blue/Slate */
+            --accent-color: #E74C3C;
+            /* Red for pins */
+            --text-color: #333333;
+            --light-bg: #F5F7FA;
+            --white: #FFFFFF;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+        }
+
+        a {
+            text-decoration: none;
+            color: #A6C638;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: var(--secondary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            color: var(--secondary-color);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .cta-btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 0.6rem 1.2rem;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .cta-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Mobile Menu */
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--secondary-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #34495e 100%);
+            color: var(--white);
+            padding: 6rem 5% 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+        }
+
+        .search-box {
+            background: var(--white);
+            padding: 0.5rem;
+            border-radius: 50px;
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-box input {
+            flex: 1;
+            border: none;
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            outline: none;
+            border-radius: 50px 0 0 50px;
+        }
+
+        .search-box button {
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 0 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .search-box button:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 5rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        /* Content Section */
+        .content-section {
+            background-color: var(--white);
+            padding: 5rem 5%;
+        }
+
+        .content-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .content-block {
+            margin-bottom: 3rem;
+        }
+
+        .content-block h2 {
+            font-size: 2rem;
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .content-block p {
+            margin-bottom: 1rem;
+            color: #555;
+            font-size: 1.1rem;
+        }
+
+        .content-block ul {
+            list-style: disc;
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #555;
+        }
+
+        .content-block li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* FAQ Section */
+        .faq {
+            padding: 5rem 5%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--white);
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: var(--transition);
+            color: #666;
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 0 1.5rem 1.5rem;
+            max-height: 200px;
+            /* Approximate height */
+        }
+
+        .faq-toggle {
+            transition: var(--transition);
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(180deg);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary-color);
+            color: var(--white);
+            padding: 3rem 5% 1rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto 2rem;
+            text-align: left;
+        }
+
+        .footer-col h4 {
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-col a {
+            opacity: 0.8;
+            transition: var(--transition);
+        }
+
+        .footer-col a:hover {
+            opacity: 1;
+            color: var(--primary-color);
+        }
+
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.5rem;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--white);
+                flex-direction: column;
+                padding: 2rem;
+                box-shadow: var(--shadow);
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+                transition: var(--transition);
+            }
+
+            .nav-links.active {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .search-box {
+                flex-direction: column;
+                background: transparent;
+                box-shadow: none;
+            }
+
+            .search-box input {
+                border-radius: 50px;
+                margin-bottom: 1rem;
+                width: 100%;
+            }
+
+            .search-box button {
+                width: 100%;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">MapQuest<span>.</span></div>
+            <div class="menu-toggle">☰</div>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#features">Features</a>
+                <a href="#about">About</a>
+                <a href="#faq">FAQ</a>
+                <a href="https://www.mapquest.com" target="_blank" class="cta-btn">Get Directions</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>Find Your Way with MapQuest</h1>
+                <p>The trusted source for driving directions, live traffic updates, and route planning. Start your
+                    journey with confidence.</p>
+                <div class="search-box">
+                    <input type="text" placeholder="Where do you want to go? (e.g. Hotels, Gas, Address)">
+                    <button>Search</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <div class="section-title">
+                <h2>Why Choose MapQuest?</h2>
+                <p>More than just a map. Discover the tools that make your travel easier and smarter.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🚗</div>
+                    <h3>Driving Directions</h3>
+                    <p>Get turn-by-turn navigation with real-time traffic adjustments to save time.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚦</div>
+                    <h3>Live Traffic</h3>
+                    <p>Avoid congestion with up-to-the-minute traffic reports and alternative routes.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⛽</div>
+                    <h3>Gas Prices</h3>
+                    <p>Find the cheapest gas stations along your route and save money on every trip.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏨</div>
+                    <h3>Hotels & Food</h3>
+                    <p>Discover top-rated hotels and restaurants near you or at your destination.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="content-section">
+            <div class="content-container">
+                <div class="content-block">
+                    <h2>About MapQuest</h2>
+                    <p><strong><a href="https://mapsdirectionsdriving.com/">Mapquest driving directions</a></strong> has
+                        been a pioneer
+                        in the digital mapping industry for decades. Before
+                        the era of smartphones, MapQuest was the go-to source for printing out driving directions for
+                        road trips. Today, it remains a powerful tool for millions of users who rely on its accurate
+                        mapping data, route planning capabilities, and local business information.</p>
+                    <p>Whether you are planning a cross-country adventure or just need to find the nearest coffee shop,
+                        MapQuest provides the reliable data you need. With features like multi-stop route planning, it
+                        is especially favored by delivery drivers and road trippers who need to optimize their paths.
+                    </p>
+                </div>
+
+                <div class="content-block">
+                    <h2>How to Use MapQuest Driving Directions</h2>
+                    <p>Getting directions on MapQuest is simple and intuitive. Follow these steps to plan your perfect
+                        route:</p>
+                    <ul>
+                        <li><strong>Enter Your Start Point:</strong> Allow the app to use your current location or type
+                            in an address.</li>
+                        <li><strong>Choose Your Destination:</strong> Enter the address or name of the place you want to
+                            visit.</li>
+                        <li><strong>Customize Your Route:</strong> Add multiple stops if you are running errands or
+                            planning a tour. You can reorder stops to find the most efficient path.</li>
+                        <li><strong>Check Options:</strong> Select "Avoid Highways" or "Avoid Tolls" if you prefer a
+                            scenic or cheaper route.</li>
+                        <li><strong>Go:</strong> Click "Get Directions" to see your route on the map, complete with
+                            estimated travel time and traffic data.</li>
+                    </ul>
+                </div>
+
+                <div class="content-block">
+                    <h2>MapQuest vs. Other Mapping Services</h2>
+                    <p>While there are many mapping services available today, MapQuest stands out with its focus on
+                        privacy and specialized tools. The <strong>Route Planner</strong> is particularly robust,
+                        allowing for more waypoints than many competitors, which is a game-changer for logistics and
+                        travel planning. Additionally, the integration of local gas prices helps users make economic
+                        decisions on the fly.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="faq">
+            <div class="section-title">
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    Is MapQuest free to use?
+                    <span class="faq-toggle">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Yes, MapQuest is a completely free service for finding driving directions, maps, and local business
+                    information.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    Can I plan a route with multiple stops?
+                    <span class="faq-toggle">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Absolutely! MapQuest is famous for its multi-stop route planner. You can add multiple destinations
+                    and optimize the order to save time and fuel.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    Does MapQuest show live traffic?
+                    <span class="faq-toggle">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Yes, MapQuest provides real-time traffic updates, including accidents, construction, and slow-downs,
+                    helping you avoid delays.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    How accurate are MapQuest directions?
+                    <span class="faq-toggle">▼</span>
+                </div>
+                <div class="faq-answer">
+                    MapQuest uses high-quality mapping data to ensure accuracy. However, like all mapping services, it's
+                    always good to be aware of your surroundings and local road signs.
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h4>MapQuest Guide</h4>
+                <p>Your official guide to getting the best out of MapQuest services.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="https://www.mapquest.com">Official Site</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Use</a></li>
+                    <li><a href="#">Disclaimer</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2024 MapQuest Guide. All rights reserved. Not affiliated with System1 or MapQuest, Inc.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile Menu Toggle
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+
+            if (menuToggle) {
+                menuToggle.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                    const icon = navLinks.classList.contains('active') ? '✕' : '☰';
+                    menuToggle.textContent = icon;
+                });
+            }
+
+            // Smooth Scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    navLinks.classList.remove('active'); // Close menu on click
+                    if (menuToggle) menuToggle.textContent = '☰';
+
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // FAQ Accordion
+            const faqItems = document.querySelectorAll('.faq-item');
+
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    // Close other items
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            otherItem.classList.remove('active');
+                        }
+                    });
+                    // Toggle current item
+                    item.classList.toggle('active');
+                });
+            });
+
+            // Search Button Mock Interaction
+            const searchBtn = document.querySelector('.search-box button');
+            const searchInput = document.querySelector('.search-box input');
+
+            if (searchBtn) {
+                searchBtn.addEventListener('click', () => {
+                    if (searchInput.value.trim() !== '') {
+                        // In a real app, this would redirect. For now, we'll just alert or focus.
+                        // Redirecting to the actual Mapquest site for utility
+                        window.location.href = `https://www.mapquest.com/search/results?query=${encodeURIComponent(searchInput.value)}`;
+                    } else {
+                        searchInput.focus();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
